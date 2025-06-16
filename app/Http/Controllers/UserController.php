@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -16,6 +17,7 @@ class UserController extends Controller
     public function getAll(){
         try {
             $users =  $this->userRepo->getAll();
+            Log::info("Fetched all users successfully", ['count' => count($users)]);
             return response()->json([
                 'status' => true,
                 'message' => 'Get all users successfully',
