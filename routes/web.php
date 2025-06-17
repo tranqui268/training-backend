@@ -20,4 +20,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/users', [UserController::class, 'getAll'])->name('user');
     Route::get('/user-manager', [UserController::class, 'index']);
+    Route::get('/user/{id}',[UserController::class,'getByUserId']);
 });

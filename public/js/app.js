@@ -7191,6 +7191,66 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7200,6 +7260,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   name: 'UserManager',
   data: function data() {
     return {
+      showUserDetail: false,
+      selectedUser: null,
       columns: [{
         label: "id",
         name: "id",
@@ -7228,8 +7290,9 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           placeholder: "Enter phone"
         }
       }, {
-        label: "Chi tiết",
-        name: "chi tiết"
+        label: "Hành động",
+        name: "actions",
+        sort: false
       }],
       config: {
         checkbox_rows: true,
@@ -7329,6 +7392,20 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           }
         }, _callee4, null, [[0, 2]]);
       }))();
+    },
+    viewUserDetail: function viewUserDetail(user) {
+      this.selectedUser = user;
+      this.showUserDetail = true;
+      console.log('Viewing user detail:', user);
+    },
+    closeUserDetail: function closeUserDetail() {
+      this.showUserDetail = false;
+      this.selectedUser = null;
+    },
+    formatDate: function formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      var date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
     }
   }),
   components: {
@@ -9438,7 +9515,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-bar[data-v-5c847977] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    margin-bottom: 30px;\r\n    padding-bottom: 20px;\r\n    border-bottom: 1px solid #eee;\n}\n.left-nav[data-v-5c847977] {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 20px;\n}\n.right-nav[data-v-5c847977] {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 15px;\n}\n.logout-btn[data-v-5c847977] {\r\n   padding: 8px 16px;\r\n    background: #dc3545;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-bar[data-v-5c847977] {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 30px;\n    padding-bottom: 20px;\n    border-bottom: 1px solid #eee;\n}\n.left-nav[data-v-5c847977] {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n}\n.right-nav[data-v-5c847977] {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n.logout-btn[data-v-5c847977] {\n   padding: 8px 16px;\n    background: #dc3545;\n    color: white;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n    transition: background-color 0.3s;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9462,7 +9539,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login-form[data-v-a2ac2cea] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  min-height: 80vh;\r\n  padding: 20px;\n}\n.form-container[data-v-a2ac2cea] {\r\n  background: white;\r\n  padding: 40px;\r\n  border-radius: 10px;\r\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\r\n  width: 100%;\r\n  max-width: 400px;\n}\n.form-container h2[data-v-a2ac2cea] {\r\n  text-align: center;\r\n  margin-bottom: 30px;\r\n  color: #333;\n}\n.form-group[data-v-a2ac2cea] {\r\n  margin-bottom: 20px;\n}\n.form-group label[data-v-a2ac2cea] {\r\n  display: block;\r\n  margin-bottom: 5px;\r\n  color: #555;\r\n  font-weight: 500;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea],\r\n.form-group input[type=\"password\"][data-v-a2ac2cea] {\r\n  width: 100%;\r\n  padding: 12px;\r\n  border: 1px solid #ddd;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n  transition: border-color 0.3s;\r\n  box-sizing: border-box;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea]:focus,\r\n.form-group input[type=\"password\"][data-v-a2ac2cea]:focus {\r\n  outline: none;\r\n  border-color: #007bff;\n}\n.form-group input.error[data-v-a2ac2cea] {\r\n  border-color: #dc3545;\n}\n.checkbox-group label[data-v-a2ac2cea] {\r\n  display: flex;\r\n  align-items: center;\r\n  cursor: pointer;\n}\n.checkbox-group input[type=\"checkbox\"][data-v-a2ac2cea] {\r\n  margin-right: 10px;\n}\n.error-message[data-v-a2ac2cea] {\r\n  color: #dc3545;\r\n  font-size: 14px;\r\n  margin-top: 5px;\r\n  display: block;\n}\n.submit-btn[data-v-a2ac2cea] {\r\n  width: 100%;\r\n  padding: 12px;\r\n  background: #007bff;\r\n  color: white;\r\n  border: none;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n  cursor: pointer;\r\n  transition: background-color 0.3s;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 10px;\r\n  box-sizing: border-box;\n}\n.submit-btn[data-v-a2ac2cea]:hover:not(:disabled) {\r\n  background: #0056b3;\n}\n.submit-btn[data-v-a2ac2cea]:disabled {\r\n  background: #6c757d;\r\n  cursor: not-allowed;\n}\n.spinner[data-v-a2ac2cea] {\r\n  width: 16px;\r\n  height: 16px;\r\n  border: 2px solid #ffffff;\r\n  border-top: 2px solid transparent;\r\n  border-radius: 50%;\r\n  animation: spin-data-v-a2ac2cea 1s linear infinite;\n}\n@keyframes spin-data-v-a2ac2cea {\n0% { transform: rotate(0deg);\n}\n100% { transform: rotate(360deg);\n}\n}\n.form-footer[data-v-a2ac2cea] {\r\n  text-align: center;\r\n  margin-top: 20px;\n}\n.form-footer a[data-v-a2ac2cea] {\r\n  color: #007bff;\r\n  text-decoration: none;\n}\n.form-footer a[data-v-a2ac2cea]:hover {\r\n  text-decoration: underline;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login-form[data-v-a2ac2cea] {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 80vh;\n  padding: 20px;\n}\n.form-container[data-v-a2ac2cea] {\n  background: white;\n  padding: 40px;\n  border-radius: 10px;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\n  width: 100%;\n  max-width: 400px;\n}\n.form-container h2[data-v-a2ac2cea] {\n  text-align: center;\n  margin-bottom: 30px;\n  color: #333;\n}\n.form-group[data-v-a2ac2cea] {\n  margin-bottom: 20px;\n}\n.form-group label[data-v-a2ac2cea] {\n  display: block;\n  margin-bottom: 5px;\n  color: #555;\n  font-weight: 500;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea],\n.form-group input[type=\"password\"][data-v-a2ac2cea] {\n  width: 100%;\n  padding: 12px;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  font-size: 16px;\n  transition: border-color 0.3s;\n  box-sizing: border-box;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea]:focus,\n.form-group input[type=\"password\"][data-v-a2ac2cea]:focus {\n  outline: none;\n  border-color: #007bff;\n}\n.form-group input.error[data-v-a2ac2cea] {\n  border-color: #dc3545;\n}\n.checkbox-group label[data-v-a2ac2cea] {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.checkbox-group input[type=\"checkbox\"][data-v-a2ac2cea] {\n  margin-right: 10px;\n}\n.error-message[data-v-a2ac2cea] {\n  color: #dc3545;\n  font-size: 14px;\n  margin-top: 5px;\n  display: block;\n}\n.submit-btn[data-v-a2ac2cea] {\n  width: 100%;\n  padding: 12px;\n  background: #007bff;\n  color: white;\n  border: none;\n  border-radius: 5px;\n  font-size: 16px;\n  cursor: pointer;\n  transition: background-color 0.3s;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  box-sizing: border-box;\n}\n.submit-btn[data-v-a2ac2cea]:hover:not(:disabled) {\n  background: #0056b3;\n}\n.submit-btn[data-v-a2ac2cea]:disabled {\n  background: #6c757d;\n  cursor: not-allowed;\n}\n.spinner[data-v-a2ac2cea] {\n  width: 16px;\n  height: 16px;\n  border: 2px solid #ffffff;\n  border-top: 2px solid transparent;\n  border-radius: 50%;\n  animation: spin-data-v-a2ac2cea 1s linear infinite;\n}\n@keyframes spin-data-v-a2ac2cea {\n0% { transform: rotate(0deg);\n}\n100% { transform: rotate(360deg);\n}\n}\n.form-footer[data-v-a2ac2cea] {\n  text-align: center;\n  margin-top: 20px;\n}\n.form-footer a[data-v-a2ac2cea] {\n  color: #007bff;\n  text-decoration: none;\n}\n.form-footer a[data-v-a2ac2cea]:hover {\n  text-decoration: underline;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9486,7 +9563,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.user-card[data-v-097ba13b] {\r\n    border-top: 1px solid #eee;\r\n    padding-top: 1.5rem;\n}\n.user-card h3[data-v-097ba13b] {\r\n    color: #333;\r\n    margin-bottom: 1rem;\n}\n.info-row[data-v-097ba13b]{\r\n    margin-bottom: 0.75rem;\r\n    padding: 0.5rem;\r\n    background: #f8f9fa;\r\n    border-radius: 4px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.user-card[data-v-097ba13b] {\n    border-top: 1px solid #eee;\n    padding-top: 1.5rem;\n}\n.user-card h3[data-v-097ba13b] {\n    color: #333;\n    margin-bottom: 1rem;\n}\n.info-row[data-v-097ba13b]{\n    margin-bottom: 0.75rem;\n    padding: 0.5rem;\n    background: #f8f9fa;\n    border-radius: 4px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9510,7 +9587,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-82076d6e] {\r\n    padding: 20px;\r\n    max-width: 1200px;\r\n    margin: 0 auto;\n}\nh1[data-v-82076d6e] {\r\n    margin-bottom: 20px;\r\n    font-size: 24px;\r\n    color: #333;\n}\n.loading-container[data-v-82076d6e] {\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    padding: 40px;\r\n    text-align: center;\n}\n.spinner[data-v-82076d6e] {\r\n    width: 40px;\r\n    height: 40px;\r\n    border: 4px solid #f3f3f3;\r\n    border-top: 4px solid #3498db;\r\n    border-radius: 50%;\r\n    animation: spin-data-v-82076d6e 1s linear infinite;\r\n    margin-bottom: 16px;\n}\n@keyframes spin-data-v-82076d6e {\n0% {\r\n        transform: rotate(0deg);\n}\n100% {\r\n        transform: rotate(360deg);\n}\n}\n.error-container[data-v-82076d6e] {\r\n    text-align: center;\r\n    padding: 40px;\n}\n.error-message[data-v-82076d6e] {\r\n    color: #e74c3c;\r\n    margin-bottom: 16px;\r\n    font-size: 16px;\n}\n.empty-container[data-v-82076d6e] {\r\n    text-align: center;\r\n    padding: 40px;\r\n    color: #666;\n}\n.btn[data-v-82076d6e] {\r\n    padding: 8px 16px;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    font-size: 14px;\r\n    margin: 0 4px;\r\n    transition: all 0.2s ease;\n}\n.btn-primary[data-v-82076d6e] {\r\n    background-color: #3498db;\r\n    color: white;\n}\n.btn-primary[data-v-82076d6e]:hover {\r\n    background-color: #2980b9;\n}\n.btn-danger[data-v-82076d6e] {\r\n    background-color: #e74c3c;\r\n    color: white;\n}\n.btn-danger[data-v-82076d6e]:hover {\r\n    background-color: #c0392b;\n}\n.btn-retry[data-v-82076d6e] {\r\n    background-color: #95a5a6;\r\n    color: white;\n}\n.btn-retry[data-v-82076d6e]:hover {\r\n    background-color: #7f8c8d;\n}\n.user-table[data-v-82076d6e] {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    background-color: #fff;\r\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);\r\n    border-radius: 8px;\r\n    overflow: hidden;\n}\n.user-table thead[data-v-82076d6e] {\r\n    background-color: #f5f5f5;\r\n    color: #333;\n}\n.user-table th[data-v-82076d6e],\r\n.user-table td[data-v-82076d6e] {\r\n    padding: 12px 16px;\r\n    text-align: left;\r\n    border-bottom: 1px solid #eee;\n}\n.user-table tbody tr[data-v-82076d6e]:hover {\r\n    background-color: #f0f8ff;\r\n    transition: background-color 0.2s ease;\n}\n.user-table th[data-v-82076d6e] {\r\n    font-weight: 600;\r\n    font-size: 14px;\r\n    text-transform: uppercase;\n}\n.user-table td[data-v-82076d6e] {\r\n    font-size: 14px;\r\n    color: #444;\n}\n@media (max-width: 768px) {\n.user-table[data-v-82076d6e],\r\n    .user-table thead[data-v-82076d6e],\r\n    .user-table tbody[data-v-82076d6e],\r\n    .user-table th[data-v-82076d6e],\r\n    .user-table td[data-v-82076d6e],\r\n    .user-table tr[data-v-82076d6e] {\r\n        display: block;\n}\n.user-table thead[data-v-82076d6e] {\r\n        display: none;\n}\n.user-table tr[data-v-82076d6e] {\r\n        margin-bottom: 15px;\r\n        border-bottom: 2px solid #f0f0f0;\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r\n        border-radius: 8px;\r\n        padding: 16px;\n}\n.user-table td[data-v-82076d6e] {\r\n        position: relative;\r\n        padding-left: 50%;\r\n        padding-bottom: 8px;\n}\n.user-table td[data-v-82076d6e]::before {\r\n        position: absolute;\r\n        top: 8px;\r\n        left: 16px;\r\n        width: 45%;\r\n        white-space: nowrap;\r\n        font-weight: bold;\r\n        color: #888;\r\n        content: attr(data-label) \": \";\n}\n.user-table td[data-v-82076d6e]:last-child {\r\n        padding-left: 16px;\n}\n.user-table td[data-v-82076d6e]:last-child::before {\r\n        display: none;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-82076d6e] {\n    padding: 20px;\n    max-width: 1200px;\n    margin: 0 auto;\n}\nh1[data-v-82076d6e] {\n    margin-bottom: 20px;\n    font-size: 24px;\n    color: #333;\n}\n.loading-container[data-v-82076d6e] {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    padding: 40px;\n    text-align: center;\n}\n.spinner[data-v-82076d6e] {\n    width: 40px;\n    height: 40px;\n    border: 4px solid #f3f3f3;\n    border-top: 4px solid #3498db;\n    border-radius: 50%;\n    animation: spin-data-v-82076d6e 1s linear infinite;\n    margin-bottom: 16px;\n}\n@keyframes spin-data-v-82076d6e {\n0% {\n        transform: rotate(0deg);\n}\n100% {\n        transform: rotate(360deg);\n}\n}\n.action-buttons[data-v-82076d6e] {\n    pointer-events: auto;\n}\n.action-buttons .btn[data-v-82076d6e] {\n    pointer-events: auto;\n}\n.error-container[data-v-82076d6e] {\n    text-align: center;\n    padding: 40px;\n}\n.error-message[data-v-82076d6e] {\n    color: #e74c3c;\n    margin-bottom: 16px;\n    font-size: 16px;\n}\n.empty-container[data-v-82076d6e] {\n    text-align: center;\n    padding: 40px;\n    color: #666;\n}\n.btn[data-v-82076d6e] {\n    padding: 8px 16px;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n    font-size: 14px;\n    margin: 0 4px;\n    transition: all 0.2s ease;\n}\n.btn-primary[data-v-82076d6e] {\n    background-color: #3498db;\n    color: white;\n}\n.btn-primary[data-v-82076d6e]:hover {\n    background-color: #2980b9;\n}\n.btn-danger[data-v-82076d6e] {\n    background-color: #e74c3c;\n    color: white;\n}\n.btn-danger[data-v-82076d6e]:hover {\n    background-color: #c0392b;\n}\n.btn-retry[data-v-82076d6e] {\n    background-color: #95a5a6;\n    color: white;\n}\n.btn-retry[data-v-82076d6e]:hover {\n    background-color: #7f8c8d;\n}\n.user-table[data-v-82076d6e] {\n    width: 100%;\n    border-collapse: collapse;\n    background-color: #fff;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);\n    border-radius: 8px;\n    overflow: hidden;\n}\n.user-table thead[data-v-82076d6e] {\n    background-color: #f5f5f5;\n    color: #333;\n}\n.user-table th[data-v-82076d6e],\n.user-table td[data-v-82076d6e] {\n    padding: 12px 16px;\n    text-align: left;\n    border-bottom: 1px solid #eee;\n}\n.user-table tbody tr[data-v-82076d6e]:hover {\n    background-color: #f0f8ff;\n    transition: background-color 0.2s ease;\n}\n.user-table th[data-v-82076d6e] {\n    font-weight: 600;\n    font-size: 14px;\n    text-transform: uppercase;\n}\n.user-table td[data-v-82076d6e] {\n    font-size: 14px;\n    color: #444;\n}\n@media (max-width: 768px) {\n.user-table[data-v-82076d6e],\n    .user-table thead[data-v-82076d6e],\n    .user-table tbody[data-v-82076d6e],\n    .user-table th[data-v-82076d6e],\n    .user-table td[data-v-82076d6e],\n    .user-table tr[data-v-82076d6e] {\n        display: block;\n}\n.user-table thead[data-v-82076d6e] {\n        display: none;\n}\n.user-table tr[data-v-82076d6e] {\n        margin-bottom: 15px;\n        border-bottom: 2px solid #f0f0f0;\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n        border-radius: 8px;\n        padding: 16px;\n}\n.user-table td[data-v-82076d6e] {\n        position: relative;\n        padding-left: 50%;\n        padding-bottom: 8px;\n}\n.user-table td[data-v-82076d6e]::before {\n        position: absolute;\n        top: 8px;\n        left: 16px;\n        width: 45%;\n        white-space: nowrap;\n        font-weight: bold;\n        color: #888;\n        content: attr(data-label) \": \";\n}\n.user-table td[data-v-82076d6e]:last-child {\n        padding-left: 16px;\n}\n.user-table td[data-v-82076d6e]:last-child::before {\n        display: none;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17932,25 +18009,28 @@ var render = function () {
                     },
                   },
                   {
-                    key: "column_action",
+                    key: "actions",
                     fn: function (props) {
                       return [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-info",
-                            on: {
-                              click: function ($event) {
-                                return _vm.getUserById(props.row.cell_value)
+                        _c("div", { staticClass: "action-buttons" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-info mr-2",
+                              attrs: { title: "Xem chi tiết" },
+                              on: {
+                                click: function ($event) {
+                                  $event.stopPropagation()
+                                  return _vm.viewUserDetail(props.row)
+                                },
                               },
                             },
-                          },
-                          [
-                            _vm._v(
-                              "\n                    Xem\n                "
-                            ),
-                          ]
-                        ),
+                            [
+                              _c("i", { staticClass: "fas fa-eye" }),
+                              _vm._v(" Chi tiết\n                    "),
+                            ]
+                          ),
+                        ]),
                       ]
                     },
                   },
@@ -17984,9 +18064,160 @@ var render = function () {
             [_vm._v("Tải lại")]
           ),
         ]),
+    _vm._v(" "),
+    _vm.showUserDetail
+      ? _c(
+          "div",
+          {
+            staticClass: "modal fade show",
+            staticStyle: { display: "block" },
+            attrs: { tabindex: "-1" },
+          },
+          [
+            _c("div", { staticClass: "modal-dialog modal-lg" }, [
+              _c("div", { staticClass: "modal-content" }, [
+                _c("div", { staticClass: "modal-header" }, [
+                  _c("h5", { staticClass: "modal-title" }, [
+                    _vm._v("Chi tiết người dùng"),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: { type: "button" },
+                      on: { click: _vm.closeUserDetail },
+                    },
+                    [_c("span", [_vm._v("×")])]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _vm.selectedUser
+                    ? _c("div", { staticClass: "user-detail" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(0),
+                              _vm._v(" "),
+                              _c("p", [_vm._v(_vm._s(_vm.selectedUser.id))]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(1),
+                              _vm._v(" "),
+                              _c("p", [_vm._v(_vm._s(_vm.selectedUser.name))]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(2),
+                              _vm._v(" "),
+                              _c("p", [_vm._v(_vm._s(_vm.selectedUser.email))]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(3),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.selectedUser.phone || "Chưa cập nhật"
+                                  )
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(4),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.formatDate(_vm.selectedUser.created_at)
+                                  )
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group" }, [
+                              _vm._m(5),
+                              _vm._v(" "),
+                              _c("p", [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.formatDate(_vm.selectedUser.updated_at)
+                                  )
+                                ),
+                              ]),
+                            ]),
+                          ]),
+                        ]),
+                      ])
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button" },
+                      on: { click: _vm.closeUserDetail },
+                    },
+                    [_vm._v("Đóng")]
+                  ),
+                ]),
+              ]),
+            ]),
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.showUserDetail
+      ? _c("div", { staticClass: "modal-backdrop fade show" })
+      : _vm._e(),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("ID:")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("Tên:")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("Email:")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("Số điện thoại:")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("Ngày tạo:")])])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_c("strong", [_vm._v("Cập nhật lần cuối:")])])
+  },
+]
 render._withStripped = true
 
 
@@ -31775,6 +32006,16 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
             return _context.a(2);
         }
       }, _callee, null, [[0, 2]]);
+    }))();
+  },
+  getUserById: function getUserById() {
+    return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            return _context2.a(2);
+        }
+      }, _callee2);
     }))();
   }
 });

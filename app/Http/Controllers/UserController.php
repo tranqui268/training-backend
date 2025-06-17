@@ -37,4 +37,22 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function getByUserId($id){
+        try {
+            $user = $this->userRepo->getById($id);
+            return response()->json([
+                'status' => true,
+                'message' => 'Get user successfully',
+                'data' => $user
+            ]);
+        } catch (\Exception $e) {
+             return response()->json([
+                'status' => false,
+                'message' => 'Failed to get user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+    }
 }

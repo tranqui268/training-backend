@@ -29,11 +29,17 @@
                     <i class="fas fa-sort"></i>
                 </template>
 
-                <template slot="column_action" slot-scope="props">
-                    <button class="btn btn-sm btn-info" @click="getUserById(props.row.cell_value)">
-                        Xem
-                    </button>
+                <template slot="actions" slot-scope="props">
+                    <div class="action-buttons">
+                        <button @click.stop="viewUserDetail(props.row)" class="btn btn-sm btn-info mr-2"
+                            title="Xem chi tiết">
+                            <i class="fas fa-eye"></i> Chi tiết
+                        </button>
+
+                    </div>
+
                 </template>
+
             </vue-bootstrap4-table>
         </div>
 
@@ -41,6 +47,60 @@
             <p>Không có dữ liệu người dùng</p>
             <button @click="retryFetch" class="btn btn-primary">Tải lại</button>
         </div>
+
+        <!-- Modal xem chi tiết user -->
+        <div v-if="showUserDetail" class="modal fade show" style="display: block;" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chi tiết người dùng</h5>
+                        <button type="button" class="close" @click="closeUserDetail">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="selectedUser" class="user-detail">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><strong>ID:</strong></label>
+                                        <p>{{ selectedUser.id }}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Tên:</strong></label>
+                                        <p>{{ selectedUser.name }}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Email:</strong></label>
+                                        <p>{{ selectedUser.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label><strong>Số điện thoại:</strong></label>
+                                        <p>{{ selectedUser.phone || 'Chưa cập nhật' }}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Ngày tạo:</strong></label>
+                                        <p>{{ formatDate(selectedUser.created_at) }}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><strong>Cập nhật lần cuối:</strong></label>
+                                        <p>{{ formatDate(selectedUser.updated_at) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="closeUserDetail">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal backdrop -->
+        <div v-if="showUserDetail" class="modal-backdrop fade show"></div>
     </div>
 </template>
 
@@ -56,6 +116,8 @@ export default {
 
     data: function () {
         return {
+            showUserDetail: false,
+            selectedUser: null,
             columns: [{
                 label: "id",
                 name: "id",
@@ -88,8 +150,9 @@ export default {
                 },
             },
             {
-                label: "Chi tiết",
-                name: "chi tiết",
+                label: "Hành động",
+                name: "actions",
+                sort: false,
             }],
             config: {
                 checkbox_rows: true,
@@ -148,6 +211,23 @@ export default {
             }
         },
 
+        viewUserDetail(user) {
+            this.selectedUser = user;
+            this.showUserDetail = true;
+            console.log('Viewing user detail:', user);
+        },
+
+        closeUserDetail() {
+            this.showUserDetail = false;
+            this.selectedUser = null;
+        },
+
+        formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
+        }
+
     },
 
     components: {
@@ -199,6 +279,13 @@ h1 {
     }
 }
 
+.action-buttons {
+    pointer-events: auto;
+}
+
+.action-buttons .btn {
+    pointer-events: auto;
+}
 
 .error-container {
     text-align: center;
