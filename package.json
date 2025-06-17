@@ -1,17 +1,33 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "private": true,
-    "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^1.2.0",
+        "laravel-mix": "^6.0.49",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.89.2",
+        "sass-loader": "^12.1.0",
         "tailwindcss": "^4.0.0",
-        "vite": "^6.2.4"
+        "vue": "^2.7.16",
+        "vue-loader": "^15.9.8",
+        "vue-template-compiler": "^2.7.16"
+    },
+    "dependencies": {
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-vue": "^0.8.0",
+        "@inertiajs/progress": "^0.2.7",
+        "vue-bootstrap4-table": "^1.1.11",
+        "vue-server-renderer": "^2.7.16",
+        "vuex": "^3.6.2"
     }
 }
