@@ -30,34 +30,30 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 
-export default {
-    layout: DefaultLayout,
+defineOptions({
+    layout: DefaultLayout
+})
 
-    name: 'Dashboard',
-
-    props: {
-        user: {
-            type: Object,
-            required: true
-        }
-    },
-
-    methods: {
-        formatDate(dateString) {
-            if (!dateString) return 'Chưa đăng nhập';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('vi-VN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
+const props = defineProps({
+    user: {
+        type: Object,
+        required: true
     }
+})
+
+function formatDate(dateString) {
+    if (!dateString) return 'Chưa đăng nhập'
+    const date = new Date(dateString)
+    return date.toLocaleDateString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
 }
 </script>
 <style scoped>
@@ -71,7 +67,7 @@ export default {
     margin-bottom: 1rem;
 }
 
-.info-row{
+.info-row {
     margin-bottom: 0.75rem;
     padding: 0.5rem;
     background: #f8f9fa;

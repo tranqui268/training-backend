@@ -13,27 +13,58 @@
         </div>
 
         <div v-else-if="users && users.length > 0">
-            <vue-bootstrap4-table :rows="users" 
-                                    :columns="columns" 
-                                    :config="config" 
-                                    @refresh-data="onRefreshData">
-                <template slot="phone" slot-scope="props">
-                    <span v-if="props.cell_value">{{ props.cell_value }}</span>
-                    <span v-else class="text-danger font-italic">Chưa cập nhật</span>
+            <a-table :data-source="users" :columns="columns">
+                <template #headerCell="{ column }">
+                    <template v-if="column.key === 'name'">
+                        <span style="color: #1890ff">Name</span>
+                    </template>
                 </template>
-
-                <template slot="actions" slot-scope="props">
-                    <div class="action-buttons">
-                        <button @click.stop="viewUserDetail(props.row)" class="btn btn-sm btn-info mr-2"
-                            title="Xem chi tiết">
-                            <i class="bi bi-pencil"></i> Chi tiết
-                        </button>
-
+                <template #customFilterDropdown="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }">
+                    <div style="padding: 8px">
+                        <a-input ref="searchInput" :placeholder="`Search ${column.dataIndex}`" :value="selectedKeys[0]"
+                            style="width: 188px; margin-bottom: 8px; display: block"
+                            @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                            @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)" />
+                        <a-button type="primary" size="small" style="width: 90px; margin-right: 8px"
+                            @click="handleSearch(selectedKeys, confirm, column.dataIndex)">
+                            <template #icon>
+                                <SearchOutlined />
+                            </template>
+                            Search
+                        </a-button>
+                        <a-button size="small" style="width: 90px" @click="handleReset(clearFilters)">
+                            Reset
+                        </a-button>
                     </div>
-
                 </template>
+                <template #customFilterIcon="{ filtered }">
+                    <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
+                </template>
+                <template #bodyCell="{ text, column, record }">
+                    <span v-if="state.searchText && state.searchedColumn === column.dataIndex">
+                        <template v-for="(fragment, i) in text
+                            .toString()
+                            .split(new RegExp(`(?<=${state.searchText})|(?=${state.searchText})`, 'i'))">
+                            <mark v-if="fragment.toLowerCase() === state.searchText.toLowerCase()" :key="i"
+                                class="highlight">
+                                {{ fragment }}
+                            </mark>
+                            <template v-else>{{ fragment }}</template>
+                        </template>
+                    </span>
+                    <template v-else-if="column.key === 'phone'">
+                        <span v-if="record.phone">{{ record.phone }}</span>
+                        <span v-else style="color: red;">Chưa cập nhật</span>
+                    </template>
 
-            </vue-bootstrap4-table>
+                    <template v-else-if="column.key === 'action'">
+                        <a-button type="primary" @click="viewUserDetail(record)">Chi tiết</a-button>
+                    </template>
+                    <template v-else>
+                        {{ text }}
+                    </template>
+                </template>
+            </a-table>
         </div>
 
         <div v-else class="empty-container">
@@ -41,7 +72,7 @@
             <button @click="retryFetch" class="btn btn-primary">Tải lại</button>
         </div>
 
-        
+
         <div v-if="showUserDetail" class="modal fade show" style="display: block;" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -96,142 +127,153 @@
     </div>
 </template>
 
-<script>
-import VueBootstrap4Table from 'vue-bootstrap4-table';
-import { mapGetters, mapActions } from 'vuex';
+<script setup>
+import { SearchOutlined } from '@ant-design/icons-vue';
+import { onMounted, ref, computed, watch, reactive } from 'vue';
+import { useStore } from 'vuex';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 
-export default {
+
+
+defineOptions({
     layout: DefaultLayout,
+    name: 'UserManager'
+})
 
-    name: 'UserManager',
 
-    data: function () {
-        return {
-            refreshTimeout: null,
-            showUserDetail: false,
-            selectedUser: null,
-            columns: [{
-                label: "id",
-                name: "id",
-                filter: {
-                    type: "simple",
-                    placeholder: "id"
-                },
-                sort: true,
-            },
-            {
-                label: "First Name",
-                name: "name",
-                filter: {
-                    type: "simple",
-                    placeholder: "Enter name"
-                },
-                sort: true,
-            },
-            {
-                label: "Email",
-                name: "email",
-                sort: true,
-            },
-            {
-                label: "Phone",
-                name: "phone",
-                filter: {
-                    type: "simple",
-                    placeholder: "Enter phone"
-                },
-            },
-            {
-                label: "Hành động",
-                name: "actions",
-                sort: false,
-            }],
-            config: {
-                checkbox_rows: true,
-                rows_selectable: true,
-                card_title: "Data"
-            }
-        };
-    },
+const store = useStore()
+const users = computed(() => store.getters['userModel/users'])
+const loading = computed(() => store.getters['userModel/loading'])
+const error = computed(() => store.getters['userModel/error'])
 
-    computed: {
-        ...mapGetters('userModel', ['users', 'loading', 'error']),
-    },
+const showUserDetail = ref(false)
+const selectedUser = ref(null)
+const refreshTimeout = ref(null)
 
-    watch: {
-        users(newVal) {
-            console.log('users updated:', newVal);
+const state = reactive({
+    searchText: '',
+    searchedColumn: '',
+});
+const searchInput = ref();
+
+const columns = ref(
+    [
+        {
+            title: 'Id',
+            dataIndex: 'id',
+            key: 'id'
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            customFilterDropdown: true,
+            onFilter: (value, record) => record.name.toString().toLowerCase().includes(value.toLowerCase()),
+            onFilterDropdownOpenChange: visible => {
+                if (visible) {
+                    setTimeout(() => {
+                        searchInput.value.focus();
+                    }, 100);
+                }
+            },
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            customFilterDropdown: true,
+            onFilter: (value, record) => record.email.toString().toLowerCase().includes(value.toLowerCase()),
+            onFilterDropdownOpenChange: visible => {
+                if (visible) {
+                    setTimeout(() => {
+                        searchInput.value.focus();
+                    }, 100);
+                }
+            },
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
+            title: 'Action',
+            key: 'action',
         }
-    },
+    ]
 
-    mounted() {
-        this.loadUsers();
-    },
-
-    async beforeRouteEnter(to, from, next) {
-        console.log('beforeRouteEnter - from:', from.path, 'to:', to.path);
-        next(async vm => {
-            await vm.loadUsers();
-        });
-    },
-
-    methods: {
-        ...mapActions('userModel', ['fetchUsers']),
-
-        async loadUsers() {
-            if (this.loading) {
-                console.log('Already loading, skip...');
-                return;
-            }
-
-            try {
-                console.log('Loading users...');
-                await this.fetchUsers();
-
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        },
-
-        async retryFetch() {
-            try {
-                await this.fetchUsers();
-            } catch (error) {
-                console.error('Error retrying fetch users:', error);
-            }
-        },
-
-        onRefreshData(){
-            clearTimeout(this.refreshTimeout);
-            this.refreshTimeout = setTimeout(() => {
-                this.loadUsers();
-            }, 1000);
-        },
-
-        viewUserDetail(user) {
-            this.selectedUser = user;
-            this.showUserDetail = true;
-            console.log('Viewing user detail:', user);
-        },
-
-        closeUserDetail() {
-            this.showUserDetail = false;
-            this.selectedUser = null;
-        },
-
-        formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
-        }
-
-    },
-
-    components: {
-        VueBootstrap4Table
-    },
+)
+const loadUsers = async () => {
+    if (loading.value) {
+        return
+    }
+    try {
+        await store.dispatch('userModel/fetchUsers')
+    } catch (error) {
+        console.log('Error loading users: ', error)
+    }
 }
+
+onMounted(() => {
+    loadUsers()
+})
+
+watch(users, (newVal) => {
+    console.log('user update: ', newVal)
+})
+
+const route = useRoute()
+onBeforeRouteUpdate(async (to, from, next) => {
+    console.log('beforeRouteUpdate - from:', from.path, 'to:', to.path)
+    await loadUsers()
+    next()
+})
+
+const retryFetch = async () => {
+    try {
+        await store.dispatch('userModel/fetchUsers')
+    } catch (error) {
+        console.error('Retry error:', error)
+    }
+}
+
+const onRefreshData = () => {
+    clearTimeout(refreshTimeout.value)
+    refreshTimeout.value = setTimeout(() => {
+        loadUsers()
+    }, 1000)
+}
+
+const viewUserDetail = (record) => {
+   console.log('viewUserDetail called with:', record) // Debug log
+  selectedUser.value = record
+  showUserDetail.value = true
+  console.log('Modal state:', { showUserDetail: showUserDetail.value, selectedUser: selectedUser.value })
+}
+
+const closeUserDetail = () => {
+    selectedUser.value = null
+    showUserDetail.value = false
+}
+
+const formatDate = (dateString) => {
+    if (!dateString) return 'N/A'
+    const date = new Date(dateString)
+    return date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN')
+}
+
+const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    state.searchText = selectedKeys[0];
+    state.searchedColumn = dataIndex;
+};
+const handleReset = clearFilters => {
+    clearFilters({
+        confirm: true,
+    });
+    state.searchText = '';
+};
 </script>
 
 <style scoped>
@@ -339,93 +381,5 @@ h1 {
 
 .btn-retry:hover {
     background-color: #7f8c8d;
-}
-
-
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.user-table thead {
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-.user-table th,
-.user-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
-.user-table tbody tr:hover {
-    background-color: #f0f8ff;
-    transition: background-color 0.2s ease;
-}
-
-.user-table th {
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.user-table td {
-    font-size: 14px;
-    color: #444;
-}
-
-
-@media (max-width: 768px) {
-
-    .user-table,
-    .user-table thead,
-    .user-table tbody,
-    .user-table th,
-    .user-table td,
-    .user-table tr {
-        display: block;
-    }
-
-    .user-table thead {
-        display: none;
-    }
-
-    .user-table tr {
-        margin-bottom: 15px;
-        border-bottom: 2px solid #f0f0f0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 16px;
-    }
-
-    .user-table td {
-        position: relative;
-        padding-left: 50%;
-        padding-bottom: 8px;
-    }
-
-    .user-table td::before {
-        position: absolute;
-        top: 8px;
-        left: 16px;
-        width: 45%;
-        white-space: nowrap;
-        font-weight: bold;
-        color: #888;
-        content: attr(data-label) ": ";
-    }
-
-    .user-table td:last-child {
-        padding-left: 16px;
-    }
-
-    .user-table td:last-child::before {
-        display: none;
-    }
 }
 </style>

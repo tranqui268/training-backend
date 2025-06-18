@@ -18,25 +18,14 @@
         </main>
     </div>
 </template>
-<script>
-import { Link } from '@inertiajs/inertia-vue'
-import { Inertia } from '@inertiajs/inertia';
+<script setup>
+import { Link, router, usePage } from '@inertiajs/vue3'
 
-export default {
-    components: { Link },
-    props: {
-        auth: Object,
-        user: {
-            type: Object,
-            required: false,
-            default: () => ({ name: 'Guest' })
-        }
-    },
-    methods: {
-        handleLogout() {
-            Inertia.post('/logout');
-        }
-    },
+const { props } = usePage()
+const auth = props.auth
+
+const handleLogout = () => {
+    router.post('/logout')
 }
 </script>
 <style scoped>

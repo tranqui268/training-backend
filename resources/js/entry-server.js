@@ -1,19 +1,15 @@
 import { createApp } from './app'
 
-export default context => {
-    return new Promise((resolve, reject) => {
+export default async function (context) {
+    const { app, router } = createApp();
 
-        const { app, router } = createApp();
+    await router.push(context.url);
 
-        router.push(context.url);
+    const matchedComponents = router.currentRoute.value.matched;
 
-        router.onReady(() => {
-            const matchedComponents = router.getMatchedComponents();
-            if (!matchedComponents.length) {
-                return reject({ code: 404 });
-            }
+    if (!matchedComponents.length) {
+        throw { code: 404 };
+    }
 
-            resolve(app);
-        }, reject);
-    });
+    return app;
 }

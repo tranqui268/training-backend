@@ -1,34 +1,28 @@
-require('./bootstrap');
-import { createInertiaApp } from "@inertiajs/inertia-vue";
-import { InertiaProgress } from "@inertiajs/progress";
+import './bootstrap';
+import { createApp, h } from 'vue';
+import { createInertiaApp, Link } from '@inertiajs/vue3';
+import { InertiaProgress } from '@inertiajs/progress';
+import Antd from 'ant-design-vue'
 import store from './store';
-import Vue from 'vue';
 
-InertiaProgress.init({ color: '#4B5563'});
+InertiaProgress.init({ color: '#4B5563' });
 
 createInertiaApp({
-    resolve: (name) => {
-        try {
-            return require(`./Pages/${name}.vue`);
-        } catch (error) {
-            console.error(`Error loading page ${name}:`, error);
-        }
-    },
-    setup({ el, App, props, plugin }) {
-        Vue.use(plugin);
-
-        Vue.mixin({
-            methods:{
-                route: window.route
-            },
-        })
-
-        Vue.component('Link', require('@inertiajs/inertia-vue').InertiaLink);
-
-        new Vue({
-            render: h => h(App, props),
-            store
-        }).$mount(el);
-    },
+    resolve: name => require(`./Pages/${name}.vue`),
     title: title => title ? `${title} - ${window.appName}` : window.appName,
+    setup({ el, App, props, plugin }) {
+        const app = createApp({ render: () => h(App, props) });
+
+        app.use(plugin);
+        app.use(store);
+        app.use(Antd);
+        app.component('Link', Link);
+        app.mixin({
+            methods: {
+                route: window.route
+            }
+        });
+
+        app.mount(el);
+    },
 });

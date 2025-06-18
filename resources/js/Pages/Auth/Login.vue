@@ -62,51 +62,49 @@
       <div class="form-footer">
         <p>
           Chưa có tài khoản? 
-          <inertia-link href="/register">Đăng ký ngay</inertia-link>
+          <Link href="/register">Đăng ký ngay</Link>
         </p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { Inertia } from '@inertiajs/inertia'
+<script setup>
+import { useForm, Link, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-export default {
-  name: 'Login',
-  
-  props: {
-    errors: {
-      type: Object,
-      default: () => ({})
-    }
-  },
+const emit = defineEmits(['success', 'error']);
 
-  data() {
-    return {
-      form: this.$inertia.form({
-        email: '',
-        password: '',
-        remember: false
-      })
-    }
-  },
-
-  methods: {
-    handleSubmit() {
-      this.form.post('/login', {
-        onSuccess: () => {
-          this.$page.props.flash.success && 
-          this.$emit('success', this.$page.props.flash.success)
-        },
-        onError: (errors) => {
-          this.$emit('error', 'Có lỗi xảy ra, vui lòng thử lại')
-        }
-      })
-    }
+const props = defineProps({
+  errors: {
+    type: Object,
+    default: () => ({})
   }
+});
+
+const page = usePage();
+
+const form = useForm({
+  email: '',
+  password: '',
+  remember: false
+});
+
+function handleSubmit() {
+  form.post('/login', {
+    onSuccess: () => {
+      const flashSuccess = page.props.flash?.success;
+      if (flashSuccess) {
+        emit('success', flashSuccess);
+      }
+    },
+    onError: () => {
+      emit('error', 'Có lỗi xảy ra, vui lòng thử lại');
+    }
+  });
 }
 </script>
+
 
 <style scoped>
 .login-form {

@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
-    .vue({version: 2})
+    .vue({version: 3})
     .sass('resources/sass/app.scss', 'public/css')
     .options({
         processCssUrls: false
@@ -22,6 +22,7 @@ mix.webpackConfig({
     resolve: {
         alias: {
             '@': __dirname + '/resources/js',
+            'vue': 'vue/dist/vue.esm-bundler.js'
         },
     },
 });
