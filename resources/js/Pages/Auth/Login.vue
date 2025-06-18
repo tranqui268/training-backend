@@ -1,73 +1,83 @@
 <template>
-  <div class="login-form">
-    <div class="form-container">
-      <h2>Đăng nhập</h2>
-      
+  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Đăng nhập</h2>
+
       <form @submit.prevent="handleSubmit">
-        <div class="form-group">
-          <label for="email">Email</label>
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 font-medium mb-1">Email</label>
           <input
             id="email"
             v-model="form.email"
             type="email"
-            :class="{ 'error': errors.email }"
+            :class="[
+              'w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2',
+              errors.email ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'
+            ]"
             placeholder="Nhập email của bạn"
             required
           />
-          <span v-if="errors.email" class="error-message">
-            {{ errors.email }}
-          </span>
+          <p v-if="errors.email" class="text-sm text-red-500 mt-1">{{ errors.email }}</p>
         </div>
 
-        <div class="form-group">
-          <label for="password">Mật khẩu</label>
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-700 font-medium mb-1">Mật khẩu</label>
           <input
             id="password"
             v-model="form.password"
             type="password"
-            :class="{ 'error': errors.password }"
+            :class="[
+              'w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2',
+              errors.password ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-200'
+            ]"
             placeholder="Nhập mật khẩu"
             required
           />
-          <span v-if="errors.password" class="error-message">
-            {{ errors.password }}
-          </span>
+          <p v-if="errors.password" class="text-sm text-red-500 mt-1">{{ errors.password }}</p>
         </div>
 
-        <div class="form-group checkbox-group">
-          <label>
-            <input
-              v-model="form.remember"
-              type="checkbox"
-            />
-            <span class="checkmark"></span>
+        <!-- Remember Me -->
+        <div class="mb-4 flex items-center">
+          <input
+            id="remember"
+            v-model="form.remember"
+            type="checkbox"
+            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label for="remember" class="ml-2 block text-sm text-gray-700">
             Ghi nhớ đăng nhập
           </label>
         </div>
 
-        <div v-if="errors.auth" class="form-group">
-          <span class="error-message">{{ errors.auth }}</span>
+        <!-- Auth Error -->
+        <div v-if="errors.auth" class="mb-4">
+          <p class="text-sm text-red-500">{{ errors.auth }}</p>
         </div>
 
+        <!-- Submit Button -->
         <button
           type="submit"
           :disabled="form.processing"
-          class="submit-btn"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span v-if="form.processing" class="spinner"></span>
+          <span v-if="form.processing" class="animate-spin mr-2 border-t-2 border-white rounded-full w-4 h-4 inline-block"></span>
           {{ form.processing ? 'Đang đăng nhập...' : 'Đăng nhập' }}
         </button>
       </form>
 
-      <div class="form-footer">
+      <!-- Footer -->
+      <div class="mt-6 text-center text-sm text-gray-600">
         <p>
-          Chưa có tài khoản? 
-          <Link href="/register">Đăng ký ngay</Link>
+          Chưa có tài khoản?
+          <Link href="/register" class="text-blue-600 hover:underline">Đăng ký ngay</Link>
         </p>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { useForm, Link, usePage } from '@inertiajs/vue3';

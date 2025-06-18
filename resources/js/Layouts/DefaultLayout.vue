@@ -1,23 +1,41 @@
 <template>
-    <div>
-        <nav class="nav-bar">
-            <div class="left-nav">
-                <Link href="/dashboard">Dashboard</Link>
-                <Link href="/user-manager" @click.native="() => console.log('click Users')">Users</Link>
-            </div>
-            <div class="right-nav">
-               <span>Xin chào, {{ auth.user.name }}</span>
-               <button @click="handleLogout" class="logout-btn">
-                    Đăng xuất
-               </button>
-            </div>
-        </nav>
+  <div>
+    <nav class="flex items-center justify-between bg-white shadow px-6 py-4">
+      <!-- Left Nav -->
+      <div class="flex items-center space-x-4">
+        <Link
+          href="/dashboard"
+          class="text-gray-700 hover:text-blue-600 font-medium transition"
+        >
+          Dashboard
+        </Link>
+        <Link
+          href="/user-manager"
+          @click.native="() => console.log('click Users')"
+          class="text-gray-700 hover:text-blue-600 font-medium transition"
+        >
+          Users
+        </Link>
+      </div>
 
-        <main class="p-6">
-            <slot></slot>
-        </main>
-    </div>
+      <!-- Right Nav -->
+      <div class="flex items-center space-x-4">
+        <span class="text-gray-600">Xin chào, {{ auth.user.name }}</span>
+        <button
+          @click="handleLogout"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-md font-medium transition"
+        >
+          Đăng xuất
+        </button>
+      </div>
+    </nav>
+
+    <main class="p-6 bg-gray-50 min-h-screen">
+      <slot></slot>
+    </main>
+  </div>
 </template>
+
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3'
 
