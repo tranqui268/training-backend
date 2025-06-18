@@ -13,27 +13,20 @@
         </div>
 
         <div v-else-if="users && users.length > 0">
-            <vue-bootstrap4-table :rows="users" :columns="columns" :config="config">
+            <vue-bootstrap4-table :rows="users" 
+                                    :columns="columns" 
+                                    :config="config" 
+                                    @refresh-data="onRefreshData">
                 <template slot="phone" slot-scope="props">
                     <span v-if="props.cell_value">{{ props.cell_value }}</span>
                     <span v-else class="text-danger font-italic">Chưa cập nhật</span>
-                </template>
-
-                <template slot="sort-asc-icon">
-                    <i class="fas fa-sort-up"></i>
-                </template>
-                <template slot="sort-desc-icon">
-                    <i class="fas fa-sort-down"></i>
-                </template>
-                <template slot="no-sort-icon">
-                    <i class="fas fa-sort"></i>
                 </template>
 
                 <template slot="actions" slot-scope="props">
                     <div class="action-buttons">
                         <button @click.stop="viewUserDetail(props.row)" class="btn btn-sm btn-info mr-2"
                             title="Xem chi tiết">
-                            <i class="fas fa-eye"></i> Chi tiết
+                            <i class="bi bi-pencil"></i> Chi tiết
                         </button>
 
                     </div>
@@ -48,7 +41,7 @@
             <button @click="retryFetch" class="btn btn-primary">Tải lại</button>
         </div>
 
-        <!-- Modal xem chi tiết user -->
+        
         <div v-if="showUserDetail" class="modal fade show" style="display: block;" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -99,7 +92,6 @@
             </div>
         </div>
 
-        <!-- Modal backdrop -->
         <div v-if="showUserDetail" class="modal-backdrop fade show"></div>
     </div>
 </template>
@@ -116,6 +108,7 @@ export default {
 
     data: function () {
         return {
+            refreshTimeout: null,
             showUserDetail: false,
             selectedUser: null,
             columns: [{
@@ -172,10 +165,8 @@ export default {
         }
     },
 
-
     mounted() {
         this.loadUsers();
-
     },
 
     async beforeRouteEnter(to, from, next) {
@@ -209,6 +200,13 @@ export default {
             } catch (error) {
                 console.error('Error retrying fetch users:', error);
             }
+        },
+
+        onRefreshData(){
+            clearTimeout(this.refreshTimeout);
+            this.refreshTimeout = setTimeout(() => {
+                this.loadUsers();
+            }, 1000);
         },
 
         viewUserDetail(user) {

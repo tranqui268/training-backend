@@ -7243,14 +7243,6 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -7260,6 +7252,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   name: 'UserManager',
   data: function data() {
     return {
+      refreshTimeout: null,
       showUserDetail: false,
       selectedUser: null,
       columns: [{
@@ -7392,6 +7385,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           }
         }, _callee4, null, [[0, 2]]);
       }))();
+    },
+    onRefreshData: function onRefreshData() {
+      var _this3 = this;
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = setTimeout(function () {
+        _this3.loadUsers();
+      }, 1000);
     },
     viewUserDetail: function viewUserDetail(user) {
       this.selectedUser = user;
@@ -9515,7 +9515,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-bar[data-v-5c847977] {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 30px;\n    padding-bottom: 20px;\n    border-bottom: 1px solid #eee;\n}\n.left-nav[data-v-5c847977] {\n    display: flex;\n    align-items: center;\n    gap: 20px;\n}\n.right-nav[data-v-5c847977] {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n.logout-btn[data-v-5c847977] {\n   padding: 8px 16px;\n    background: #dc3545;\n    color: white;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n    transition: background-color 0.3s;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.nav-bar[data-v-5c847977] {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    margin-bottom: 30px;\r\n    padding-bottom: 20px;\r\n    border-bottom: 1px solid #eee;\n}\n.left-nav[data-v-5c847977] {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 20px;\n}\n.right-nav[data-v-5c847977] {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 15px;\n}\n.logout-btn[data-v-5c847977] {\r\n   padding: 8px 16px;\r\n    background: #dc3545;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9539,7 +9539,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login-form[data-v-a2ac2cea] {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 80vh;\n  padding: 20px;\n}\n.form-container[data-v-a2ac2cea] {\n  background: white;\n  padding: 40px;\n  border-radius: 10px;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\n  width: 100%;\n  max-width: 400px;\n}\n.form-container h2[data-v-a2ac2cea] {\n  text-align: center;\n  margin-bottom: 30px;\n  color: #333;\n}\n.form-group[data-v-a2ac2cea] {\n  margin-bottom: 20px;\n}\n.form-group label[data-v-a2ac2cea] {\n  display: block;\n  margin-bottom: 5px;\n  color: #555;\n  font-weight: 500;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea],\n.form-group input[type=\"password\"][data-v-a2ac2cea] {\n  width: 100%;\n  padding: 12px;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  font-size: 16px;\n  transition: border-color 0.3s;\n  box-sizing: border-box;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea]:focus,\n.form-group input[type=\"password\"][data-v-a2ac2cea]:focus {\n  outline: none;\n  border-color: #007bff;\n}\n.form-group input.error[data-v-a2ac2cea] {\n  border-color: #dc3545;\n}\n.checkbox-group label[data-v-a2ac2cea] {\n  display: flex;\n  align-items: center;\n  cursor: pointer;\n}\n.checkbox-group input[type=\"checkbox\"][data-v-a2ac2cea] {\n  margin-right: 10px;\n}\n.error-message[data-v-a2ac2cea] {\n  color: #dc3545;\n  font-size: 14px;\n  margin-top: 5px;\n  display: block;\n}\n.submit-btn[data-v-a2ac2cea] {\n  width: 100%;\n  padding: 12px;\n  background: #007bff;\n  color: white;\n  border: none;\n  border-radius: 5px;\n  font-size: 16px;\n  cursor: pointer;\n  transition: background-color 0.3s;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  box-sizing: border-box;\n}\n.submit-btn[data-v-a2ac2cea]:hover:not(:disabled) {\n  background: #0056b3;\n}\n.submit-btn[data-v-a2ac2cea]:disabled {\n  background: #6c757d;\n  cursor: not-allowed;\n}\n.spinner[data-v-a2ac2cea] {\n  width: 16px;\n  height: 16px;\n  border: 2px solid #ffffff;\n  border-top: 2px solid transparent;\n  border-radius: 50%;\n  animation: spin-data-v-a2ac2cea 1s linear infinite;\n}\n@keyframes spin-data-v-a2ac2cea {\n0% { transform: rotate(0deg);\n}\n100% { transform: rotate(360deg);\n}\n}\n.form-footer[data-v-a2ac2cea] {\n  text-align: center;\n  margin-top: 20px;\n}\n.form-footer a[data-v-a2ac2cea] {\n  color: #007bff;\n  text-decoration: none;\n}\n.form-footer a[data-v-a2ac2cea]:hover {\n  text-decoration: underline;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login-form[data-v-a2ac2cea] {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  min-height: 80vh;\r\n  padding: 20px;\n}\n.form-container[data-v-a2ac2cea] {\r\n  background: white;\r\n  padding: 40px;\r\n  border-radius: 10px;\r\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\r\n  width: 100%;\r\n  max-width: 400px;\n}\n.form-container h2[data-v-a2ac2cea] {\r\n  text-align: center;\r\n  margin-bottom: 30px;\r\n  color: #333;\n}\n.form-group[data-v-a2ac2cea] {\r\n  margin-bottom: 20px;\n}\n.form-group label[data-v-a2ac2cea] {\r\n  display: block;\r\n  margin-bottom: 5px;\r\n  color: #555;\r\n  font-weight: 500;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea],\r\n.form-group input[type=\"password\"][data-v-a2ac2cea] {\r\n  width: 100%;\r\n  padding: 12px;\r\n  border: 1px solid #ddd;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n  transition: border-color 0.3s;\r\n  box-sizing: border-box;\n}\n.form-group input[type=\"email\"][data-v-a2ac2cea]:focus,\r\n.form-group input[type=\"password\"][data-v-a2ac2cea]:focus {\r\n  outline: none;\r\n  border-color: #007bff;\n}\n.form-group input.error[data-v-a2ac2cea] {\r\n  border-color: #dc3545;\n}\n.checkbox-group label[data-v-a2ac2cea] {\r\n  display: flex;\r\n  align-items: center;\r\n  cursor: pointer;\n}\n.checkbox-group input[type=\"checkbox\"][data-v-a2ac2cea] {\r\n  margin-right: 10px;\n}\n.error-message[data-v-a2ac2cea] {\r\n  color: #dc3545;\r\n  font-size: 14px;\r\n  margin-top: 5px;\r\n  display: block;\n}\n.submit-btn[data-v-a2ac2cea] {\r\n  width: 100%;\r\n  padding: 12px;\r\n  background: #007bff;\r\n  color: white;\r\n  border: none;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n  cursor: pointer;\r\n  transition: background-color 0.3s;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 10px;\r\n  box-sizing: border-box;\n}\n.submit-btn[data-v-a2ac2cea]:hover:not(:disabled) {\r\n  background: #0056b3;\n}\n.submit-btn[data-v-a2ac2cea]:disabled {\r\n  background: #6c757d;\r\n  cursor: not-allowed;\n}\n.spinner[data-v-a2ac2cea] {\r\n  width: 16px;\r\n  height: 16px;\r\n  border: 2px solid #ffffff;\r\n  border-top: 2px solid transparent;\r\n  border-radius: 50%;\r\n  animation: spin-data-v-a2ac2cea 1s linear infinite;\n}\n@keyframes spin-data-v-a2ac2cea {\n0% { transform: rotate(0deg);\n}\n100% { transform: rotate(360deg);\n}\n}\n.form-footer[data-v-a2ac2cea] {\r\n  text-align: center;\r\n  margin-top: 20px;\n}\n.form-footer a[data-v-a2ac2cea] {\r\n  color: #007bff;\r\n  text-decoration: none;\n}\n.form-footer a[data-v-a2ac2cea]:hover {\r\n  text-decoration: underline;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9563,7 +9563,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.user-card[data-v-097ba13b] {\n    border-top: 1px solid #eee;\n    padding-top: 1.5rem;\n}\n.user-card h3[data-v-097ba13b] {\n    color: #333;\n    margin-bottom: 1rem;\n}\n.info-row[data-v-097ba13b]{\n    margin-bottom: 0.75rem;\n    padding: 0.5rem;\n    background: #f8f9fa;\n    border-radius: 4px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.user-card[data-v-097ba13b] {\r\n    border-top: 1px solid #eee;\r\n    padding-top: 1.5rem;\n}\n.user-card h3[data-v-097ba13b] {\r\n    color: #333;\r\n    margin-bottom: 1rem;\n}\n.info-row[data-v-097ba13b]{\r\n    margin-bottom: 0.75rem;\r\n    padding: 0.5rem;\r\n    background: #f8f9fa;\r\n    border-radius: 4px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17985,73 +17985,56 @@ var render = function () {
       ? _c(
           "div",
           [
-            _c(
-              "vue-bootstrap4-table",
-              {
-                attrs: {
-                  rows: _vm.users,
-                  columns: _vm.columns,
-                  config: _vm.config,
-                },
-                scopedSlots: _vm._u([
-                  {
-                    key: "phone",
-                    fn: function (props) {
-                      return [
-                        props.cell_value
-                          ? _c("span", [_vm._v(_vm._s(props.cell_value))])
-                          : _c(
-                              "span",
-                              { staticClass: "text-danger font-italic" },
-                              [_vm._v("Chưa cập nhật")]
-                            ),
-                      ]
-                    },
+            _c("vue-bootstrap4-table", {
+              attrs: {
+                rows: _vm.users,
+                columns: _vm.columns,
+                config: _vm.config,
+              },
+              on: { "refresh-data": _vm.onRefreshData },
+              scopedSlots: _vm._u([
+                {
+                  key: "phone",
+                  fn: function (props) {
+                    return [
+                      props.cell_value
+                        ? _c("span", [_vm._v(_vm._s(props.cell_value))])
+                        : _c(
+                            "span",
+                            { staticClass: "text-danger font-italic" },
+                            [_vm._v("Chưa cập nhật")]
+                          ),
+                    ]
                   },
-                  {
-                    key: "actions",
-                    fn: function (props) {
-                      return [
-                        _c("div", { staticClass: "action-buttons" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-sm btn-info mr-2",
-                              attrs: { title: "Xem chi tiết" },
-                              on: {
-                                click: function ($event) {
-                                  $event.stopPropagation()
-                                  return _vm.viewUserDetail(props.row)
-                                },
+                },
+                {
+                  key: "actions",
+                  fn: function (props) {
+                    return [
+                      _c("div", { staticClass: "action-buttons" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-info mr-2",
+                            attrs: { title: "Xem chi tiết" },
+                            on: {
+                              click: function ($event) {
+                                $event.stopPropagation()
+                                return _vm.viewUserDetail(props.row)
                               },
                             },
-                            [
-                              _c("i", { staticClass: "fas fa-eye" }),
-                              _vm._v(" Chi tiết\n                    "),
-                            ]
-                          ),
-                        ]),
-                      ]
-                    },
+                          },
+                          [
+                            _c("i", { staticClass: "bi bi-pencil" }),
+                            _vm._v(" Chi tiết\n                    "),
+                          ]
+                        ),
+                      ]),
+                    ]
                   },
-                ]),
-              },
-              [
-                _vm._v(" "),
-                _c("template", { slot: "sort-asc-icon" }, [
-                  _c("i", { staticClass: "fas fa-sort-up" }),
-                ]),
-                _vm._v(" "),
-                _c("template", { slot: "sort-desc-icon" }, [
-                  _c("i", { staticClass: "fas fa-sort-down" }),
-                ]),
-                _vm._v(" "),
-                _c("template", { slot: "no-sort-icon" }, [
-                  _c("i", { staticClass: "fas fa-sort" }),
-                ]),
-              ],
-              2
-            ),
+                },
+              ]),
+            }),
           ],
           1
         )
